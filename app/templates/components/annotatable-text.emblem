@@ -1,0 +1,3 @@
+#annotatable_text == formattedText
+if questionBubbleIsVisible
+  question-bubble question=question choices=choices annotator=this location=questionBubbleLocation

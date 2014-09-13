@@ -27,6 +27,12 @@
     "ember-cli-inject-live-reload": "^1.0.2",
     "ember-cli-qunit": "0.1.0",
     "express": "^4.8.5",
-    "glob": "^4.0.5"
+    "glob": "^4.0.5",
+    "broccoli-emblem-compiler": "^0.3.18",
+    "broccoli-ember-script": "^0.1.1",
+    "broccoli-sass": "^0.2.2",
+    "connect-restreamer": "^1.0.0",
+    "ember-cli-coffeescript": "0.0.7",
+    "ember-django-adapter": "^0.3.0"
   }
 }
