@@ -1,0 +1,6 @@
+p == bubbleContent.text
+
+select change="selectChoice"
+  each choice in bubbleContent.choices
+    option value=choice.id
+      == choice.text

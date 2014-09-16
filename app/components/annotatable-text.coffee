@@ -5,6 +5,7 @@ Component = Ember.Component.extend
   QuestionFacade: (topic, question, annotatedText) ->
     @topic = topic
     @question = question
+    @formType = question.get('type')
     @text = question.get('text')
     @choices = question.get('choices.content')
     @annotatedText = annotatedText
@@ -23,6 +24,7 @@ Component = Ember.Component.extend
 
   TopicsFacade: (topics, annotatedText) ->
     @choices = topics
+    @formType = 'mc'
     @annotatedText = annotatedText
 
     @qa = (choice) ->
@@ -96,9 +98,10 @@ Component = Ember.Component.extend
     @set('bubbleContent', null)
     @set('highlight', null)
 
-  acceptChoice: (choice) ->
+  acceptChoice: (choice, questionBubble) ->
     @addToQa(choice)
     @getBubbleContent(choice)
+    questionBubble.rerender()
 
   addToQa: (choice) ->
     @get('highlight.qa').push(@get('bubbleContent').qa(choice))
