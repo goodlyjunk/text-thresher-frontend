@@ -1,4 +1,4 @@
-p == question.text
-each choices
+p == bubbleContent.text
+each bubbleContent.choices
   button.block.pointer click="selectChoice this"
     == text

@@ -13,9 +13,9 @@ Model = DS.Model.extend
     title = ""
     @get('qa').forEach (element) ->
       if element.question
-        title += "Q: #{ element.question } A: #{ element.answer }; "
+        title += "Q: #{ element.question.get('text') } A: #{ element.choice.get('text') }; "
       else
-        title += "#{ element.answer }:: "
+        title += "#{ element.choice.get('text') }:: "
     title
 
 `export default Model`

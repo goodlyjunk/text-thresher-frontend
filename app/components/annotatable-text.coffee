@@ -2,9 +2,40 @@
 
 Component = Ember.Component.extend
 
+  QuestionFacade: (topic, question, annotatedText) ->
+    @topic = topic
+    @question = question
+    @text = question.get('text')
+    @choices = question.get('choices.content')
+    @annotatedText = annotatedText
+
+    @qa = (choice) ->
+      { question: @question, choice: choice }
+
+    @next = (choice) ->
+      _this = this
+      nextQuestion = null
+      @question.get('dependencies').forEach (item)->
+        if item.if == choice.get('id')
+          return nextQuestion = _this.topic.get('questions.content').filterBy('id', item.then)[0]
+      new @annotatedText.QuestionFacade(@topic, nextQuestion, @annotatedText) if nextQuestion != null
+    return
+
+  TopicsFacade: (topics, annotatedText) ->
+    @choices = topics
+    @annotatedText = annotatedText
+
+    @qa = (choice) ->
+      { choice: choice }
+
+    @next = (choice) ->
+      question = choice.get('questions.content').filterBy('id', choice.id + ".01")[0]
+      new @annotatedText.QuestionFacade(choice, question, @annotatedText)
+    return
+
   questionBubbleIsVisible: (->
-    @get('highlight')
-  ).property('highlight')
+    @get('bubbleContent')
+  ).property('bubbleContent')
 
   mouseDown: (event) ->
     location = @createLocationObject(event)
@@ -12,11 +43,33 @@ Component = Ember.Component.extend
 
   mouseUp: (event) ->
     selection = window.getSelection()
-    if selection.toString().length > 0 && !@get('highlight')
+    if $(event.target).hasClass('highlight')
+      id = event.target.id.split("_")[1]
+      @reactivateHighlight(id)
+    else if @clickedQuestionBubble(event)
+      nar = "whale"
+    else if selection.toString().length > 0 && !@get('bubbleContent')
       @createHighlight(selection)
-      @set('question', null)
-      @set('choices', @get('task.topics.content'))
+      topicFacade = new @TopicsFacade(@get('task.topics.content'), this)
+      @set('bubbleContent', topicFacade)
       @setLocation(event)
+    else if @get('bubbleContent')
+      @disableQuestionBubble()
+
+  reactivateHighlight: (id) ->
+    highlight = @get('task.highlights.content').filterBy('id', id)[0]
+    @set('highlight', highlight)
+    qa = highlight.get('qa')
+    topic = qa[0].choice
+    lastQA = highlight.get('qa')[..].pop()
+    if qa.length > 1
+      facade = new @QuestionFacade(topic, lastQA.question, this).next(lastQA.choice)
+    else
+      facade = new @TopicsFacade(@get('task.topics.content'), this).next(lastQA.choice)
+    @set('bubbleContent', facade)
+
+  clickedQuestionBubble: (event) ->
+    $(event.target).hasClass('question-bubble') || $(event.target).parents().hasClass('question-bubble')
 
   createHighlight: (selection) ->
     task = @get('task')
@@ -39,33 +92,24 @@ Component = Ember.Component.extend
     { pageX: event.pageX, pageY: event.pageY }
 
   disableQuestionBubble: ->
+    @get('highlight').deleteRecord() if @get('highlight.qa').length == 0
+    @set('bubbleContent', null)
     @set('highlight', null)
 
   acceptChoice: (choice) ->
     @addToQa(choice)
-    @setNextQuestion(choice)
-    @popBubble() if @get('highlight') == null
+    @getBubbleContent(choice)
 
-  setNextQuestion: (choice) ->
-    _this = this
-    question = null
-    dependencies = @get('question.dependencies')
-    if dependencies
-      @get('question.dependencies').forEach (item)->
-        if item.if == choice.get('id')
-          return question = _this.get('topic.questions.content').filterBy('id', item.then)[0]
-    else
-      @set('topic', choice)
-      question = choice.get('questions.content').filterBy('id', choice.id + ".01")[0]
-    if question == null
+  addToQa: (choice) ->
+    @get('highlight.qa').push(@get('bubbleContent').qa(choice))
+    @get('task').notifyPropertyChange('highlights')
+
+  getBubbleContent: (choice) ->
+    newBubbleContent = @get('bubbleContent').next(choice)
+    @set('bubbleContent', newBubbleContent)
+    if !newBubbleContent
       @get('highlight').markAsComplete()
       @disableQuestionBubble()
-    @set('question', question)
-    @set('choices', question.get('choices.content')) if question
-
-  addToQa: (answer) ->
-    @get('highlight.qa').push({ question: @get('question.text'), answer: answer.get('text')})
-    @get('task').notifyPropertyChange('highlights')
 
   formattedText: (->
     text = @get('task.text')
@@ -77,7 +121,7 @@ Component = Ember.Component.extend
     @getHighlightIndexes(text).forEach (index) ->
       highlight = index.highlight
       complete = if highlight && highlight.get('complete') then "green-lighted" else "yellow-lighted"
-      string = if index.start then "<span class=#{ complete } id='highlight_#{ highlight.id }' title='#{ highlight.getTitle() }'>" else "</span>"
+      string = if index.start then "<span class='highlight #{ complete }' id='highlight_#{ highlight.id }' title='#{ highlight.getTitle() }'>" else "</span>"
       text = text.slice(0, index.index) + string + text.slice(index.index)
     text
 
