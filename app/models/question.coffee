@@ -3,6 +3,7 @@ Question = DS.Model.extend
   topic: DS.belongsTo("topic")
 
   answers: DS.hasMany("answer")
+  textAnswer: DS.belongsTo("text-answer")
 
   dependencies: DS.attr("array")
   text: DS.attr("string")

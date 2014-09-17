@@ -30,7 +30,8 @@ Component = Ember.Component.extend
 
     submitText: ->
       text = $('#question_bubble_textarea').val()
-      @get('annotator').acceptChoice(text, this)
+      textAnswer = @get('bubbleContent.question').store.createRecord('text-answer', {text: text})
+      @get('annotator').acceptChoice(textAnswer, this)
 
 `export default Component;`
 
