@@ -48,6 +48,7 @@ Component = Ember.Component.extend
     if $(event.target).hasClass('highlight')
       id = event.target.id.split("_")[1]
       @reactivateHighlight(id)
+      @setLocation(event)
     else if @clickedQuestionBubble(event)
       nar = "whale"
     else if selection.toString().length > 0 && !@get('bubbleContent')
