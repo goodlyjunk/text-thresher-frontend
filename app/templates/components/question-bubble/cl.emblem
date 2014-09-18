@@ -1,0 +1,8 @@
+p == bubbleContent.text
+
+ul#question_bubble_check_list.no-list-style
+  each bubbleContent.choices
+    li
+      input type="checkbox" value=this.id
+      label == text
+button click="submitCheckList" Submit

@@ -4,6 +4,8 @@ Question = DS.Model.extend
 
   answers: DS.hasMany("answer")
   textAnswer: DS.belongsTo("text-answer")
+  checkListAnswer: DS.belongsTo("check-list-answer")
+  timeAnswer: DS.belongsTo("time-answer")
 
   dependencies: DS.attr("array")
   text: DS.attr("string")

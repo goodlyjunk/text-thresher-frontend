@@ -33,6 +33,15 @@ Component = Ember.Component.extend
       textAnswer = @get('bubbleContent.question').store.createRecord('text-answer', {text: text})
       @get('annotator').acceptChoice(textAnswer, this)
 
+    submitCheckList: ->
+      checkedItems = $('#question_bubble_check_list').children('li').children('input').filter(':checked')
+      checkListAnswer = @get('bubbleContent.question').store.createRecord('check-list-answer')
+      answers = @get('bubbleContent.question.answers.content')
+      $(checkedItems).each ->
+        answer = answers.filterBy('id', this.value)[0]
+        checkListAnswer.get('selectedAnswers').pushObject(answer)
+      @get('annotator').acceptChoice(checkListAnswer, this)
+
 `export default Component;`
 
-# remaining types: cl, tm
+# remaining types: tm

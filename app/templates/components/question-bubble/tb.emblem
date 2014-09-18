@@ -1,4 +1,4 @@
 p == bubbleContent.text
 
 textarea#question_bubble_textarea
-button click="submitText"
+button click="submitText" Submit
