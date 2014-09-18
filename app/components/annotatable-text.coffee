@@ -2,6 +2,8 @@
 
 Component = Ember.Component.extend
 
+  reduced: true
+
   QuestionFacade: (topic, question, annotatedText) ->
     @topic = topic
     @question = question
@@ -77,8 +79,15 @@ Component = Ember.Component.extend
   createHighlight: (selection) ->
     task = @get('task')
     id = task.get('highlights.content.length')
+    range = window.getSelection().getRangeAt(0);
+    preCaretRange = range.cloneRange();
+    preCaretRange.selectNodeContents($("#annotatable_text")[0]);
+    preCaretRange.setEnd(range.startContainer, range.startOffset);
+    startOffset = preCaretRange.toString().replace(/\\n/g, " ").length;
+    endOffset = startOffset + range.toString().replace(/\\n/g, " ").length;
     highlight = task.store.createRecord('highlight',
-      text: selection.toString()
+      start: startOffset
+      stop: endOffset
       qa: Ember.A()
       complete: false
       id: id
@@ -113,37 +122,122 @@ Component = Ember.Component.extend
     @set('bubbleContent', newBubbleContent)
     if !newBubbleContent
       @get('highlight').markAsComplete()
-      @disableQuestionBubble()
 
   formattedText: (->
     text = @get('task.text')
-    text = @insertHighlights(text)
-    text.replace(/\n/g, "<br/>")
-  ).property('task.text', 'task.highlights.@each')
+    text = @insertElements(text)
+    text.replace(/\n/g, "<span class='breaking-span'>&#92;n</span>")
+  ).property('task.text', 'task.highlights.@each', 'reduced')
 
-  insertHighlights: (text) ->
-    @getHighlightIndexes(text).forEach (index) ->
-      highlight = index.highlight
-      complete = if highlight && highlight.get('complete') then "green-lighted" else "yellow-lighted"
-      string = if index.start then "<span class='highlight #{ complete }' id='highlight_#{ highlight.id }' title='#{ highlight.getTitle() }'>" else "</span>"
-      text = text.slice(0, index.index) + string + text.slice(index.index)
+
+  insertElements: (text) ->
+    _this = this
+    @getElementIndexes(text).forEach (index) ->
+      text = switch index.type
+        when "highlight" then _this.insertHighlight(text, index)
+        when "offset" then _this.insertTuaOffset(text, index)
+        when "extended-offset" then _this.insertExtendedOffset(text, index)
+        else _this.insertEndTag(text, index)
     text
+
+  getElementIndexes: (text) ->
+    indexes = @getHighlightIndexes(text)
+    indexes = indexes.concat(@getTuaOffsetIndexes(text))
+    indexes = indexes.concat(@getExtendedOffsetIndexes(text))
+    @sortIndexes(indexes)
+
+  insertHighlight: (text, index) ->
+    highlight = index.highlight
+    complete = if highlight && highlight.get('complete') then "green-lighted" else "yellow-lighted"
+    string = "<span class='highlight #{ complete }' id='highlight_#{ highlight.id }' title='#{ highlight.getTitle() }'>"
+    text.slice(0, index.index) + string + text.slice(index.index)
+
+  insertTuaOffset: (text, index) ->
+    string = "<span class='offset'>"
+    text.slice(0, index.index) + string + text.slice(index.index)
+
+  insertExtendedOffset: (text, index) ->
+    string = "<span class='extended-offset'>"
+    text.slice(0, index.index) + string + text.slice(index.index)
+
+  insertEndTag: (text, index) ->
+    text.slice(0, index.index) + "</span>" + text.slice(index.index)
 
   getHighlightIndexes: (text) ->
     highlights = @get('task.highlights')
     indexes = []
     highlights.forEach (highlight)->
-      highlightText = highlight.get('text')
-      startIndex = text.indexOf(highlightText)
-      endIndex = startIndex + highlightText.length
-      indexes.push { index: startIndex, start: true, highlight: highlight }
-      indexes.push { index: endIndex, start: false }
-    @sortIndexes(indexes)
+      startIndex = highlight.get('start')
+      endIndex = highlight.get('stop')
+      indexes.push { index: startIndex, highlight: highlight, type: "highlight" }
+      indexes.push { index: endIndex }
+    indexes
+
+  getTuaOffsetIndexes: (text) ->
+    offsets = @get('task.tua.offsets')
+    indexes = []
+    offsets.forEach (offset)->
+      startIndex = offset.start
+      endIndex = offset.stop
+      indexes.push { index: startIndex, type: "offset" }
+      indexes.push { index: endIndex }
+    indexes
+
+  getExtendedOffsetIndexes: (text) ->
+    _this = this
+    offsets = @get('task.tua.offsets')
+    indexes = []
+    offsets.forEach (offset)->
+      startIndex = _this.indexByWord(text, offset.start, -15)
+      endIndex = _this.indexByWord(text, offset.stop, 15)
+      indexes.push { index: startIndex, type: "extended-offset" } if startIndex
+      indexes.push { index: endIndex } if endIndex
+    indexes
+
+  indexByWord: (text, index, wordCount) ->
+    extendedIndex = @getIndexForExtendedOffset(text, index, wordCount)
+    if @extendedIndexIsUnconflicting(text, index, extendedIndex, wordCount) then extendedIndex else null
+
+  getIndexForExtendedOffset: (text, index, wordCount) ->
+    reverse = @extendedOffsetIsReversed(wordCount)
+    substring = if reverse then text.substring(0, index) else text.substring(index)
+    words = substring.split(" ")
+    words = words.reverse() if reverse
+    cursor = 0
+    selectedWords = []
+    while cursor < Math.abs(wordCount)
+      word = words[cursor]
+      selectedWords.push(word)
+      cursor += 1
+    selectedWords = selectedWords.reverse() if reverse
+    length = selectedWords.join(" ").length
+    if reverse then index - length else index + length
+
+  extendedIndexIsUnconflicting: (text, index, extendedIndex, wordCount) ->
+    _this = this
+    reverse = @extendedOffsetIsReversed(wordCount)
+    offsets = @get('task.tua.offsets')
+    conflicting = offsets.forEach (offset)->
+      if reverse
+        offsetIndex = _this.getIndexForExtendedOffset(text, offset.stop, wordCount)
+        return true if offsetIndex < index && offsetIndex > extendedIndex
+      else
+        offsetIndex = _this.getIndexForExtendedOffset(text, offset.start, wordCount)
+        return true if offsetIndex > index && offsetIndex < extendedIndex
+    if conflicting then false else true
+
+  extendedOffsetIsReversed: (wordCount) ->
+    wordCountAbs = Math.abs(wordCount)
+    wordCount != wordCountAbs
 
   sortIndexes: (indexes) ->
     indexes.sort (a, b) ->
       return 1  if a.index < b.index
       return -1  if a.index > b.index
       0
+
+  actions:
+    toggleText: ->
+      @toggleProperty('reduced')
 
 `export default Component;`

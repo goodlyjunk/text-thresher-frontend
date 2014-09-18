@@ -48,5 +48,3 @@ Component = Ember.Component.extend
       @get('annotator').acceptChoice(checkListAnswer, this)
 
 `export default Component;`
-
-# remaining types: tm

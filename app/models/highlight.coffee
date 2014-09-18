@@ -3,7 +3,8 @@ Model = DS.Model.extend
   task: DS.belongsTo("task")
 
   complete: DS.attr("boolean")
-  text: DS.attr("string")
+  start: DS.attr("number")
+  stop: DS.attr("stop")
   qa: Ember.A()
 
   markAsComplete: ->

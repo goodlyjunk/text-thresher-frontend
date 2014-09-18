@@ -1,3 +1,6 @@
-#annotatable_text == formattedText
+#annotatable_text class=reduced:annotatable-text__reduced == formattedText
+
 if questionBubbleIsVisible
   question-bubble annotator=this bubbleContent=bubbleContent location=questionBubbleLocation
+
+button click="toggleText" Toggle Text
