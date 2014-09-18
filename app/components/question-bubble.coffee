@@ -33,6 +33,11 @@ Component = Ember.Component.extend
       textAnswer = @get('bubbleContent.question').store.createRecord('text-answer', {text: text})
       @get('annotator').acceptChoice(textAnswer, this)
 
+    submitTime: ->
+      time = $('#question_bubble_time_input').val()
+      timeAnswer = @get('bubbleContent.question').store.createRecord('time-answer', {time: time})
+      @get('annotator').acceptChoice(timeAnswer, this)
+
     submitCheckList: ->
       checkedItems = $('#question_bubble_check_list').children('li').children('input').filter(':checked')
       checkListAnswer = @get('bubbleContent.question').store.createRecord('check-list-answer')

@@ -1,0 +1,4 @@
+p == bubbleContent.text
+
+input#question_bubble_time_input type="time"
+button click="submitTime" Submit
