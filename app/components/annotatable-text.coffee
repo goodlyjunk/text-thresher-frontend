@@ -4,12 +4,22 @@ Component = Ember.Component.extend
 
   reduced: true
 
-  QuestionFacade: (topic, question, annotatedText) ->
+  HighlightFacade: (highlightGroup, annotatedText) ->
+    @highlightGroup = highlightGroup
+    @annotatedText = annotatedText
+    @formType = "highlight"
+
+    @next = ->
+      new @annotatedText.HighlightFacade(@highlightGroup, @annotatedText)
+    return
+
+  QuestionFacade: (topic, question, highlightGroup, annotatedText) ->
     @topic = topic
     @question = question
     @formType = question.get('type')
     @text = question.get('text')
     @choices = question.get('choices.content')
+    @highlightGroup = highlightGroup
     @annotatedText = annotatedText
 
     @qa = (choice) ->
@@ -21,12 +31,14 @@ Component = Ember.Component.extend
       @question.get('dependencies').forEach (item)->
         if item.if == choice.get('id')
           return nextQuestion = _this.topic.get('questions.content').filterBy('id', item.then)[0]
-      new @annotatedText.QuestionFacade(@topic, nextQuestion, @annotatedText) if nextQuestion != null
+      return new @annotatedText.HighlightFacade(@highlightGroup, @annotatedText) if nextQuestion == null
+      new @annotatedText.QuestionFacade(@topic, nextQuestion, @highlightGroup, @annotatedText)
     return
 
-  TopicsFacade: (topics, annotatedText) ->
+  TopicsFacade: (topics, highlightGroup, annotatedText) ->
     @choices = topics
     @formType = 'mc'
+    @highlightGroup = highlightGroup
     @annotatedText = annotatedText
 
     @qa = (choice) ->
@@ -34,11 +46,15 @@ Component = Ember.Component.extend
 
     @next = (choice) ->
       question = choice.get('questions.content').filterBy('id', choice.id + ".01")[0]
-      new @annotatedText.QuestionFacade(choice, question, @annotatedText)
+      new @annotatedText.QuestionFacade(choice, question, @highlightGroup, @annotatedText)
     return
 
   questionBubbleIsVisible: (->
     @get('bubbleContent')
+  ).property('bubbleContent')
+
+  highlightingGroup: (->
+    @get('bubbleContent') instanceof @HighlightFacade
   ).property('bubbleContent')
 
   mouseDown: (event) ->
@@ -51,26 +67,29 @@ Component = Ember.Component.extend
       id = event.target.id.split("_")[1]
       @reactivateHighlight(id)
       @setLocation(event)
-    else if @clickedQuestionBubble(event)
-      nar = "whale"
-    else if selection.toString().length > 0 && !@get('bubbleContent')
-      @createHighlight(selection)
-      topicFacade = new @TopicsFacade(@get('task.topics.content'), this)
+    else if selection.toString().length > 0 && @get('highlightingGroup')
+      highlightGroup = @createHighlight(selection)
+      topicFacade = new @HighlightFacade(highlightGroup, this)
       @set('bubbleContent', topicFacade)
       @setLocation(event)
-    else if @get('bubbleContent')
+    else if selection.toString().length > 0 && !@get('bubbleContent')
+      highlightGroup = @createHighlight(selection)
+      topicFacade = new @TopicsFacade(@get('task.topics.content'), highlightGroup, this)
+      @set('bubbleContent', topicFacade)
+      @setLocation(event)
+    else if @get('questionBubbleIsVisible') && !@clickedQuestionBubble(event)
       @disableQuestionBubble()
 
   reactivateHighlight: (id) ->
-    highlight = @get('task.highlights.content').filterBy('id', id)[0]
-    @set('highlight', highlight)
-    qa = highlight.get('qa')
+    highlightGroup = @get('task.highlightGroups.content').filterBy('id', id)[0]
+    @set('highlightGroup', highlightGroup)
+    qa = highlightGroup.get('qa')
     topic = qa[0].choice
-    lastQA = highlight.get('qa')[..].pop()
+    lastQA = highlightGroup.get('qa')[..].pop()
     if qa.length > 1
-      facade = new @QuestionFacade(topic, lastQA.question, this).next(lastQA.choice)
+      facade = new @QuestionFacade(topic, lastQA.question, highlightGroup, this).next(lastQA.choice)
     else
-      facade = new @TopicsFacade(@get('task.topics.content'), this).next(lastQA.choice)
+      facade = new @TopicsFacade(@get('task.topics.content'), highlightGroup, this).next(lastQA.choice)
     @set('bubbleContent', facade)
 
   clickedQuestionBubble: (event) ->
@@ -78,22 +97,30 @@ Component = Ember.Component.extend
 
   createHighlight: (selection) ->
     task = @get('task')
-    id = task.get('highlights.content.length')
+    id = task.get('highlightGroups.content.length')
     range = window.getSelection().getRangeAt(0);
     preCaretRange = range.cloneRange();
     preCaretRange.selectNodeContents($("#annotatable_text")[0]);
     preCaretRange.setEnd(range.startContainer, range.startOffset);
     startOffset = preCaretRange.toString().replace(/\\n/g, " ").length;
     endOffset = startOffset + range.toString().replace(/\\n/g, " ").length;
+    if @get('highlightingGroup')
+      highlightGroup = @get('bubbleContent').highlightGroup
+    else
+      highlightGroup = task.store.createRecord('highlight-group',
+        qa: Ember.A()
+        complete: false
+        id: id
+      )
     highlight = task.store.createRecord('highlight',
       start: startOffset
       stop: endOffset
-      qa: Ember.A()
-      complete: false
-      id: id
+      highlightGroup: highlightGroup
     )
-    @set('highlight', highlight)
-    task.get('highlights').pushObject(highlight)
+    highlightGroup.get('highlights').pushObject(highlight)
+    @set('highlightGroup', highlightGroup)
+    task.get('highlightGroups').pushObject(highlightGroup)
+    highlightGroup
 
   setLocation: (event) ->
     location = @get('mouseDownLocation')
@@ -104,9 +131,9 @@ Component = Ember.Component.extend
     { pageX: event.pageX, pageY: event.pageY }
 
   disableQuestionBubble: ->
-    @get('highlight').deleteRecord() if @get('highlight.qa').length == 0
+    @get('highlightGroup').deleteRecord() if @get('highlightGroup.qa').length == 0
     @set('bubbleContent', null)
-    @set('highlight', null)
+    @set('highlightGroup', null)
 
   acceptChoice: (choice, questionBubble) ->
     @addToQa(choice)
@@ -114,20 +141,20 @@ Component = Ember.Component.extend
     questionBubble.rerender()
 
   addToQa: (choice) ->
-    @get('highlight.qa').push(@get('bubbleContent').qa(choice))
-    @get('task').notifyPropertyChange('highlights')
+    @get('highlightGroup.qa').push(@get('bubbleContent').qa(choice))
+    @get('task').notifyPropertyChange('highlightGroups')
 
   getBubbleContent: (choice) ->
     newBubbleContent = @get('bubbleContent').next(choice)
     @set('bubbleContent', newBubbleContent)
-    if !newBubbleContent
-      @get('highlight').markAsComplete()
+    if @get('highlightingGroup')
+      @get('highlightGroup').markAsComplete()
 
   formattedText: (->
     text = @get('task.text')
     text = @insertElements(text)
     text.replace(/\n/g, "<span class='breaking-span'>&#92;n</span>")
-  ).property('task.text', 'task.highlights.@each', 'reduced')
+  ).property('task.text', 'task.highlightGroups.@each', 'reduced')
 
 
   insertElements: (text) ->
@@ -147,9 +174,9 @@ Component = Ember.Component.extend
     @sortIndexes(indexes)
 
   insertHighlight: (text, index) ->
-    highlight = index.highlight
-    complete = if highlight && highlight.get('complete') then "green-lighted" else "yellow-lighted"
-    string = "<span class='highlight #{ complete }' id='highlight_#{ highlight.id }' title='#{ highlight.getTitle() }'>"
+    highlightGroup = index.highlightGroup
+    complete = if highlightGroup && highlightGroup.get('complete') then "green-lighted" else "yellow-lighted"
+    string = "<span class='highlight #{ complete }' id='highlight_#{ highlightGroup.id }' title='#{ highlightGroup.getTitle() }'>"
     text.slice(0, index.index) + string + text.slice(index.index)
 
   insertTuaOffset: (text, index) ->
@@ -164,13 +191,14 @@ Component = Ember.Component.extend
     text.slice(0, index.index) + "</span>" + text.slice(index.index)
 
   getHighlightIndexes: (text) ->
-    highlights = @get('task.highlights')
+    highlightGroups = @get('task.highlightGroups')
     indexes = []
-    highlights.forEach (highlight)->
-      startIndex = highlight.get('start')
-      endIndex = highlight.get('stop')
-      indexes.push { index: startIndex, highlight: highlight, type: "highlight" }
-      indexes.push { index: endIndex }
+    highlightGroups.forEach (highlightGroup) ->
+      highlightGroup.get('highlights').forEach (highlight) ->
+        startIndex = highlight.get('start')
+        endIndex = highlight.get('stop')
+        indexes.push { index: startIndex, highlightGroup: highlightGroup, type: "highlight" }
+        indexes.push { index: endIndex }
     indexes
 
   getTuaOffsetIndexes: (text) ->
