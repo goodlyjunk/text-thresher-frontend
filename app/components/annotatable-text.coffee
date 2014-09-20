@@ -26,12 +26,12 @@ Component = Ember.Component.extend
       { question: @question, choice: choice }
 
     @next = (choice) ->
-      _this = this
-      nextQuestion = null
-      @question.get('dependencies').forEach (item)->
-        if item.if == choice.get('id')
-          return nextQuestion = _this.topic.get('questions.content').filterBy('id', item.then)[0]
-      return new @annotatedText.HighlightFacade(@highlightGroup, @annotatedText) if nextQuestion == null
+      pendingQuestions = @highlightGroup.get('pendingQuestions')
+      pendingQuestions.removeAt(0)
+      dependencies = if choice.dependencies then choice.dependencies(@topic, @question) else []
+      pendingQuestions.pushObjects(dependencies)
+      return new @annotatedText.HighlightFacade(@highlightGroup, @annotatedText) if pendingQuestions.get('content').length == 0
+      nextQuestion = pendingQuestions.get('content')[0]
       new @annotatedText.QuestionFacade(@topic, nextQuestion, @highlightGroup, @annotatedText)
     return
 
@@ -45,8 +45,11 @@ Component = Ember.Component.extend
       { choice: choice }
 
     @next = (choice) ->
-      question = choice.get('questions.content').filterBy('id', choice.id + ".01")[0]
-      new @annotatedText.QuestionFacade(choice, question, @highlightGroup, @annotatedText)
+      pendingQuestions = @highlightGroup.get('pendingQuestions')
+      dependencies = choice.get('dependencies')
+      pendingQuestions.pushObjects(dependencies)
+      firstQuestion = pendingQuestions.get('content')[0]
+      new @annotatedText.QuestionFacade(choice, firstQuestion, @highlightGroup, @annotatedText)
     return
 
   questionBubbleIsVisible: (->
@@ -83,13 +86,12 @@ Component = Ember.Component.extend
   reactivateHighlight: (id) ->
     highlightGroup = @get('task.highlightGroups.content').filterBy('id', id)[0]
     @set('highlightGroup', highlightGroup)
-    qa = highlightGroup.get('qa')
-    topic = qa[0].choice
-    lastQA = highlightGroup.get('qa')[..].pop()
-    if qa.length > 1
-      facade = new @QuestionFacade(topic, lastQA.question, highlightGroup, this).next(lastQA.choice)
+    nextQuestion = highlightGroup.get('pendingQuestions.content')[0]
+    if nextQuestion
+      topic = highlightGroup.get('qa')[0].choice
+      facade = new @QuestionFacade(topic, nextQuestion, highlightGroup, this)
     else
-      facade = new @TopicsFacade(@get('task.topics.content'), highlightGroup, this).next(lastQA.choice)
+      facade = new @HighlightFacade(highlightGroup, this)
     @set('bubbleContent', facade)
 
   clickedQuestionBubble: (event) ->

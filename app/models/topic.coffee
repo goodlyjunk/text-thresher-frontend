@@ -12,4 +12,8 @@ Topic = DS.Model.extend
     @get('questions')
   ).property('questions.@each')
 
+  dependencies: (->
+    [@get('questions.content').filterBy('id', @id + ".01")[0]]
+  ).property("questions")
+
 `export default Topic`
