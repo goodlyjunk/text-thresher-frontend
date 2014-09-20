@@ -3,4 +3,7 @@
 if questionBubbleIsVisible
   question-bubble annotator=this bubbleContent=bubbleContent location=questionBubbleLocation
 
-button click="toggleText" Show full article
+if reduced
+  button click="toggleText" Show full article
+else 
+  button click="toggleText" Show only partial article
