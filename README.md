@@ -16,6 +16,7 @@ You will need the following things properly installed on your computer.
 * `git clone <repository-url>` this repository
 * change into the new directory
 * `npm install`
+* `npm install -g ember-cli`
 * `bower install`
 
 ## Running / Development
@@ -31,6 +32,10 @@ Make use of the many generators for code, try `ember help generate` for more det
 
 * `ember test`
 * `ember test --server`
+
+Or if you want to proxy an external server:
+
+* `ember server --proxy http://127.0.0.1:8080`
 
 ### Building
 
