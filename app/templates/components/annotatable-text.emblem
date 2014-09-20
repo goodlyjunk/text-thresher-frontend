@@ -1,7 +1,7 @@
 #annotatable_text class=reduced:annotatable-text__reduced == formattedText
 
 if questionBubbleIsVisible
-  question-bubble annotator=this bubbleContent=bubbleContent location=questionBubbleLocation
+  question-bubble annotator=this bubbleContent=bubbleContent
 
 if reduced
   button click="toggleText" Show full article

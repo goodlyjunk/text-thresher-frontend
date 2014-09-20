@@ -1,8 +1,21 @@
 .question-bubble
-  position: absolute
+  position: fixed
+  font-family: $question-font
+  right: 0
+  top: 0
   width: 25vw
-  height: 20vw
+  height: auto
   padding: $rhythm
   overflow: auto
-  background-color: $main-background-color
-  box-shadow: 0 0 $rhythm/3 #D4CEBC
+  background-color: $question-background-color
+  button
+    width: 100%
+    margin: 10px 0
+    &.half
+      width: 40%
+      margin: 10px
+      padding: 5px
+  ul
+    margin-left: -50px
+  select
+    width: 100%

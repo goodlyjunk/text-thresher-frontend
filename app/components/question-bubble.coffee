@@ -14,8 +14,6 @@ Component = Ember.Component.extend
   setLocation: (->
     location = @get('location')
     element = $(@get('element'))
-    element.css('top', location.pageY + 7)
-    element.css('left', location.pageX + 7)
   ).on('didInsertElement')
 
   actions:
@@ -46,5 +44,12 @@ Component = Ember.Component.extend
         answer = answers.filterBy('id', this.value)[0]
         checkListAnswer.get('selectedAnswers').pushObject(answer)
       @get('annotator').acceptChoice(checkListAnswer, this)
+
+    # User can click done to exit question box state and CONFIRM input
+    #
+    done: ->
+
+    # User can click cancel to exit highlight state and CANCEL input
+    cancel: ->
 
 `export default Component;`
