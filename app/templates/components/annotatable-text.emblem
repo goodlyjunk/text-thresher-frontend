@@ -3,4 +3,4 @@
 if questionBubbleIsVisible
   question-bubble annotator=this bubbleContent=bubbleContent location=questionBubbleLocation
 
-button click="toggleText" Toggle Text
+button click="toggleText" Show full article
