@@ -16,4 +16,8 @@ Topic = DS.Model.extend
     [@get('questions.content').filterBy('id', @id + ".01")[0]]
   ).property("questions")
 
+  ontologicalDependencies: (->
+    @get('dependencies')
+  ).property('dependencies')
+
 `export default Topic`

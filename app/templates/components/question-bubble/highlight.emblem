@@ -1,4 +1,4 @@
 p Highlight additional phrases that support this assertion.
 
-button class="half" click="closeTextBubble" Done
-button class="half" click="refresTextBubble" Cancel
+button class="half" click="done" Done
+button class="half" click="cancel" Remove

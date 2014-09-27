@@ -131,6 +131,11 @@ Component = Ember.Component.extend
   createLocationObject: (event) ->
     { pageX: event.pageX, pageY: event.pageY }
 
+  destroyHighlightGroup: ->
+    @get('highlightGroup.highlights.content').forEach (highlight) ->
+      highlight.deleteRecord()
+    @get('highlightGroup').deleteRecord()
+
   disableQuestionBubble: ->
     @get('highlightGroup').deleteRecord() if @get('highlightGroup.qa').length == 0
     @set('bubbleContent', null)

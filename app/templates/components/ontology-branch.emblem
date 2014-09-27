@@ -1,0 +1,6 @@
+li click="toggleShoots" = branch.text
+if shootsVisible
+	if branch.ontologicalDependencies
+		ul
+			each shoot in branch.ontologicalDependencies
+				ontology-branch branch=shoot

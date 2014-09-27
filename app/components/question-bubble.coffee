@@ -45,11 +45,11 @@ Component = Ember.Component.extend
         checkListAnswer.get('selectedAnswers').pushObject(answer)
       @get('annotator').acceptChoice(checkListAnswer, this)
 
-    # User can click done to exit question box state and CONFIRM input
-    #
     done: ->
+      @get('annotator').disableQuestionBubble()
 
-    # User can click cancel to exit highlight state and CANCEL input
     cancel: ->
+      @get('annotator').destroyHighlightGroup()
+      @get('annotator').disableQuestionBubble()
 
 `export default Component;`
