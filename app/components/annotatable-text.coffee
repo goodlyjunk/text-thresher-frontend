@@ -69,18 +69,17 @@ Component = Ember.Component.extend
     if $(event.target).hasClass('highlight')
       id = event.target.id.split("_")[1]
       @reactivateHighlight(id)
-      @setLocation(event)
+    else if @clickedQuestionBubble(event)
+      event.preventDefault()
     else if selection.toString().length > 0 && @get('highlightingGroup')
       highlightGroup = @createHighlight(selection)
       topicFacade = new @HighlightFacade(highlightGroup, this)
       @set('bubbleContent', topicFacade)
-      @setLocation(event)
     else if selection.toString().length > 0 && !@get('bubbleContent')
       highlightGroup = @createHighlight(selection)
       topicFacade = new @TopicsFacade(@get('task.topics.content'), highlightGroup, this)
       @set('bubbleContent', topicFacade)
-      @setLocation(event)
-    else if @get('questionBubbleIsVisible') && !@clickedQuestionBubble(event)
+    else if @get('questionBubbleIsVisible')
       @disableQuestionBubble()
 
   reactivateHighlight: (id) ->
@@ -269,5 +268,8 @@ Component = Ember.Component.extend
   actions:
     toggleText: ->
       @toggleProperty('reduced')
+    closeTextBubble: ->
+      @disableQuestionBubble()
+
 
 `export default Component;`
