@@ -1,8 +1,11 @@
-.toggler
-	button click="toggleVisibility"
-		| Toggle Ontology
+.ontology-tree
+	.ontology-tree__toggler
+		button click="toggleVisibility"
+			| Toggle Ontology
 
-if visible
-	each topic in topics
-		.ontology-tree__topic
-			ontology-branch branch=topic
+	if visible
+		table
+			tr
+				each topic in topics
+					td.ontology-tree__topic
+						ontology-branch branch=topic topic=true

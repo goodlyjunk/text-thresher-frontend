@@ -1,6 +1,7 @@
 `import Ember from "ember";`
 
 Component = Ember.Component.extend
+
   visible: true
 
   actions:

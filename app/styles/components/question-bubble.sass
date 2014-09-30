@@ -7,10 +7,15 @@
   height: auto
   padding: $rhythm
   overflow: auto
-  background-color: $question-background-color
+  background-color: $main-font-color
+  color: $main-background-color
   button
     width: 100%
     margin: 10px 0
+    font-size: 1vw
+    background-color: $main-background-color
+    border: .1vw solid $main-font-color
+    color: $main-font-color
     &.half
       width: 40%
       margin: 10px
@@ -19,3 +24,15 @@
     margin-left: -50px
   select
     width: 100%
+    font-size: 1vw
+    background-color: $main-background-color
+    border-color: $main-font-color
+    color: $main-font-color
+
+#question_bubble_check_list
+  label
+    font-size: 1vw
+    color: $main-background-color
+    line-height: .1vw
+  li
+    margin-bottom: 1vw
