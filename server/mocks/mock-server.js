@@ -261,6 +261,10 @@ module.exports = function(app) {
               "top":false,
               "answers":[
                 {
+                  "text":"1-5",
+                  "id":"3.03.01"
+                },
+                {
                   "text":"5-10",
                   "id":"3.03.02"
                 },
@@ -269,20 +273,16 @@ module.exports = function(app) {
                   "id":"3.03.03"
                 },
                 {
-                  "text":"1-5",
-                  "id":"3.03.01"
-                },
-                {
-                  "text":"100+",
-                  "id":"3.03.06"
-                },
-                {
                   "text":"25-50",
                   "id":"3.03.04"
                 },
                 {
                   "text":"50-100",
                   "id":"3.03.05"
+                },
+                {
+                  "text":"100+",
+                  "id":"3.03.06"
                 }
               ],
               "dependencies":[
