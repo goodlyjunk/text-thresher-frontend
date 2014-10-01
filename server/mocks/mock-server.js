@@ -25,7 +25,7 @@ module.exports = function(app) {
         "injuries":"",
         "voluntary dissolution of a camp":""
       },
-      "text":"25 of 36 DOCUMENTS\nThe Associated Press State & Local Wire\nNovember 14, 2011 Monday 8:14 PM GMT\nMore arrests expected at Occupy Albany\nSECTION: STATE AND REGIONAL\nLENGTH: 122 words\nDATELINE: ALBANY N.Y.\n\n\nMore arrests are expected in the downtown park where some Occupy Albany protesters plan to keep violating the state's 11 p.m. curfew.\nProtesters have camped since Oct. 21 in the city's Academy Park, with several crossing Saturday and Sunday into adjacent state-run Lafayette Park. They were testing Gov. Andrew Cuomo's vow to enforce the curfew there.\nState troopers arrested 26 Saturday and 13 Sunday night, including four who also were arrested a day earlier.\nAll were issued appearance tickets for Albany City Court, though District Attorney P. David Soares says he won't prosecute them for trespassing.\nDemonstrators say they will keep challenging the curfew until the arrests stop and they expect a large group to do that this weekend.\n \nLOAD-DATE: November 15, 2011\nLANGUAGE: ENGLISH\nPUBLICATION-TYPE: Newswire\nCopyright 2011 Associated Press\nAll Rights Reserved",
+      "text":"Occupy L.A., teachers union march on LAUSD HQ\nTuesday, October 18, 2011\nBy Subha Ravindhran and Robert Holguin\n\n\nDOWNTOWN LOS ANGELES (KABC) -- Occupy L.A. demonstrators have been joined by teachers, students and parents for a march from City Hall to LAUSD headquarters to protest education cuts.\nOccupy L.A. demonstrators have been living in tents outside of City Hall for about two weeks protesting against corporate greed.\nOn Tuesday, United Teachers Los Angeles joined Occupy L.A. in a march to Los Angeles Unified School District headquarters, where the school board was meeting. Demonstrators are looking to start a second occupation site to protest teacher layoffs.\nThe union wants the district to re-hire the 1,200 teachers and other school workers that were laid off earlier this year.\n'One of the main points of Occupy L.A. is to protect the public's sphere, that we share a public arena and it should be protected from corporate influence,' said teacher and activist Marcy Winograd.\nWinograd says one major issue is corporate charters defunding public education in LAUSD.\n'Let's fully fund public education, let's bring back the 1,200 teachers, open the school libraries,' said Winograd. 'We have foundations that are funded by large, corporate CEOs that are saying 'Look, we want to divide the district, we want it defunded, and we want to seize the schools.' This is wrong. We want teachers back in our classrooms.'\nThe march began downtown at about 4 p.m. and marched toward the rally at LAUSD headquarters by 5 p.m.\n'It's just the energy of all the groups coming together, and this is a chance for everybody to come together and realize we're all part of the same thing,' said retired LAUSD teacher Tim Doherty. 'The problems are all the same. It's just that each group's got to realize you're part of this too.'\n'This really is the core of the issue, is our future,' said Lisa Clapier, a spokesperson for Occupy L.A. 'And these teachers are the ones who steward our precious children, and without them, we wouldn't be able to provide our children with the foundation that they require. This is really an important day.'\nLAUSD Superintendent John Deasy released a statement Tuesday in response to the march:\n'It is an insult for these protestors to equate a school district that during the past four years has experienced a $2 billion loss of dollars in state and federal funding, with policies and institutions that have systematically hurt the poor and middle class.'\nProtestors planned to camp at LAUSD HQ overnight, but acknowledged they had no permit to do so. \nImmigrant-rights communities have also announced a plan to march this week.\n'We are here because we understand very clearly that if we are going to have a movement in Los Angeles, it cannot be a movement without the immigrant community and the Latino community,' said Angelica Salas from Coalition for Humane Immigrant Rights of Los Angeles.\n'We are here to express our deep solidarity with those that initiated this historic movement,' said Juan Jose Gutierrez from Full Rights for Immigrants Coalition. 'We want to add our strength and energy to it, to make it more viable, and in fact we are going to make it more viable.'\nAn immigrants-rights march is planned for 5 p.m. Wednesday, starting at 4th Street and Grand Avenue and ending at California Plaza, the occupation site for Occupy L.A.\n(Copyright Â©2012 KABC-TV/DT. All Rights Reserved.)",
       "topics":[
         {
           "id":"1",
@@ -1728,12 +1728,16 @@ module.exports = function(app) {
       "tua":{
         "offsets":[
           {
-            "start":435,
-            "stop":445
+            "start":46,
+            "stop":53
           },
           {
-            "start":593,
-            "stop":613
+            "start":144,
+            "stop":296
+          },
+          {
+            "start":1433,
+            "stop":1530
           }
         ],
         "type":"Protester",
