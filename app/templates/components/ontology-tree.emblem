@@ -1,7 +1,10 @@
 .ontology-tree
 	.ontology-tree__toggler
 		button click="toggleVisibility"
-			| Toggle Ontology
+			if visible
+				| Hide Ontology
+			else
+				| Show Ontology
 
 	if visible
 		table
