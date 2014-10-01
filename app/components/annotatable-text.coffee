@@ -224,6 +224,8 @@ Component = Ember.Component.extend
     offsets.forEach (offset)->
       startIndex = _this.indexByWord(text, offset.start, -15)
       endIndex = _this.indexByWord(text, offset.stop, 15)
+      startIndex = 0 if startIndex < 0
+      endIndex = text.length - 1 if endIndex > text.length - 1
       indexes.push { index: startIndex, type: "extended-offset" } if startIndex
       indexes.push { index: endIndex } if endIndex
     indexes
