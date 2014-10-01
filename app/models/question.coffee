@@ -19,8 +19,14 @@ Question = DS.Model.extend
   ).property('answers.@each')
 
   ontologicalDependencies: (->
+    output = []
     store = @store
-    @get('dependencies').map (dependency) -> store.find('question', dependency.then)
+    @get('dependencies').forEach (dependency) ->
+      unique = true
+      output.forEach (outputDependency) ->
+        unique = false if dependency.then == outputDependency.then
+      output.push(dependency) if unique
+    output.map (dependency) -> store.find('question', dependency.then)
   ).property('dependencies')
 
 `export default Question`
