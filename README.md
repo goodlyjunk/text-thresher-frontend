@@ -2,7 +2,7 @@
 
 This README outlines the details of collaborating on this Ember application.
 
-A short introduction of this app could easily go here.
+Txt_thrshr is a web application for researcher-directed crowd annotation of text. Txt_thrshr allows researchers to decompose traditional qualitative annotation tasks (often referred to as "hand-coding") so that large jobs can be done by crowd workers with minimal training. Txt_thshr also maintains provenance of annotation/labeling so that peer researchers can review crowd work and ensure the validity of crowd annotations. Since all the annotation is digital, labels canbe used to create algorithms via machine learning.
 
 ## Prerequisites
 
