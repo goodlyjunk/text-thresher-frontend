@@ -165,12 +165,14 @@ Component = Ember.Component.extend
 
   insertElements: (text) ->
     _this = this
+    previousIndex = null
     @getElementIndexes(text).forEach (index) ->
       text = switch index.type
-        when "highlight" then _this.insertHighlight(text, index)
-        when "offset" then _this.insertTuaOffset(text, index)
-        when "extended-offset" then _this.insertExtendedOffset(text, index)
-        else _this.insertEndTag(text, index)
+        when "highlight" then _this.insertHighlight(text, index, previousIndex)
+        when "offset" then _this.insertTuaOffset(text, index, previousIndex)
+        when "extended-offset" then _this.insertExtendedOffset(text, index, previousIndex)
+        else _this.insertEndTag(text, index, previousIndex)
+      previousIndex = index
     text
 
   getElementIndexes: (text) ->
@@ -179,22 +181,33 @@ Component = Ember.Component.extend
     indexes = indexes.concat(@getExtendedOffsetIndexes(text))
     @sortIndexes(indexes)
 
-  insertHighlight: (text, index) ->
-    highlightGroup = index.highlightGroup
+  highlightTag: (highlightGroup) ->
     complete = if highlightGroup && highlightGroup.get('complete') then "green-lighted" else "yellow-lighted"
-    string = "<span class='highlight #{ complete }' id='highlight_#{ highlightGroup.id }' title='#{ highlightGroup.getTitle() }'>"
+    "<span class='highlight #{ complete }' id='highlight_#{ highlightGroup.id }' title='#{ highlightGroup.getTitle() }'>"
+
+  wrapHighlightTags: (string, index, previousIndex) ->
+    return string unless previousIndex && (!index.highlightGroup || index.highlightGroup != previousIndex.highlightGroup) && !previousIndex.type && previousIndex.highlightGroup
+    "</span>" + string + @highlightTag(previousIndex.highlightGroup)
+
+  insertHighlight: (text, index, previousIndex) ->
+    string = @highlightTag(index.highlightGroup)
+    string = @wrapHighlightTags(string, index, previousIndex)
     text.slice(0, index.index) + string + text.slice(index.index)
 
-  insertTuaOffset: (text, index) ->
+  insertTuaOffset: (text, index, previousIndex) ->
     string = "<span class='offset'>"
+    string = @wrapHighlightTags(string, index, previousIndex)
     text.slice(0, index.index) + string + text.slice(index.index)
 
-  insertExtendedOffset: (text, index) ->
+  insertExtendedOffset: (text, index, previousIndex) ->
     string = "<span class='extended-offset'>"
+    string = @wrapHighlightTags(string, index, previousIndex)
     text.slice(0, index.index) + string + text.slice(index.index)
 
-  insertEndTag: (text, index) ->
-    text.slice(0, index.index) + "</span>" + text.slice(index.index)
+  insertEndTag: (text, index, previousIndex) ->
+    string = "</span>"
+    string = @wrapHighlightTags(string, index, previousIndex)
+    text.slice(0, index.index) + string + text.slice(index.index)
 
   getHighlightIndexes: (text) ->
     highlightGroups = @get('task.highlightGroups')
@@ -204,7 +217,7 @@ Component = Ember.Component.extend
         startIndex = highlight.get('start')
         endIndex = highlight.get('stop')
         indexes.push { index: startIndex, highlightGroup: highlightGroup, type: "highlight" }
-        indexes.push { index: endIndex }
+        indexes.push { index: endIndex, highlightGroup: highlightGroup }
     indexes
 
   getTuaOffsetIndexes: (text) ->
