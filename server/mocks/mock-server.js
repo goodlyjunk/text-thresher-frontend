@@ -1,9 +1,6 @@
 module.exports = function(app) {
   var express = require('express');
   var mockServerRouter = express.Router();
-  mockServerRouter.get('/', function(req, res) {
-    res.send({"mock-server":[]});
-  });
   mockServerRouter.get('/tasks', function(req, res) {
     var task = {
       "id": 1,
@@ -1747,5 +1744,5 @@ module.exports = function(app) {
     }
     res.send([task]);
   })
-  app.use('/', mockServerRouter);
+  app.use('/api/', mockServerRouter);
 };

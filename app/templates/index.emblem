@@ -1,6 +1,6 @@
 header.header txt-thrshr
 
 .main
-  annotatable-text text=text task=this
+  annotatable-text text=text tua=this
 
 ontology-tree topics=topics

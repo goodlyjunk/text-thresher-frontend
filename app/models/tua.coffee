@@ -1,7 +1,9 @@
 Tua = DS.Model.extend
-  
-  instructions: DS.attr("string")
-  offsets: DS.attr("array")
-  type: DS.attr("string")
+	analysisType: DS.belongsTo("analysis-type")
+	highlightGroups: DS.hasMany("highlight-group")
+
+	offsets: DS.attr("array")
+
+	text: DS.attr("string")
 
 `export default Tua`

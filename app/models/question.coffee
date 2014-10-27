@@ -9,7 +9,6 @@ Question = DS.Model.extend
   checkListAnswer: DS.belongsTo("check-list-answer")
   timeAnswer: DS.belongsTo("time-answer")
 
-  dependencies: DS.attr("array")
   text: DS.attr("string")
   top: DS.attr("boolean")
   type: DS.attr("string")
@@ -27,6 +26,6 @@ Question = DS.Model.extend
         unique = false if dependency.then == outputDependency.then
       output.push(dependency) if unique
     output.map (dependency) -> store.find('question', dependency.then)
-  ).property('dependencies')
+  ).property('topic.analysisType.dependencies')
 
 `export default Question`

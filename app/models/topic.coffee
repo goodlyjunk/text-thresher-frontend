@@ -1,5 +1,6 @@
 Topic = DS.Model.extend
   
+  analysisType: DS.belongsTo("analysis-type")
   questions: DS.hasMany("question")
 
   name: DS.attr("string")

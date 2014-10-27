@@ -2,6 +2,7 @@
 
 module.exports = function(environment) {
   var ENV = {
+    modulePrefix: 'txt-thrshr',
     environment: environment,
     baseURL: '/',
     locationType: 'auto',
@@ -15,10 +16,9 @@ module.exports = function(environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
+      API_NAMESPACE: 'api'
     }
   };
-
-  ENV.APP.API_NAMESPACE = '';
 
   if (environment === 'development') {
     // ENV.APP.LOG_RESOLVER = true;
@@ -27,10 +27,19 @@ module.exports = function(environment) {
     // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
     ENV.APP.LOG_VIEW_LOOKUPS = true;
     ENV.APP.API_HOST = 'http://0.0.0.0:4200/';
+    ENV.APP.API_NAMESPACE = 'api';
   }
 
   if (environment === 'test') {
-    ENV.baseURL = '/'; // Testem prefers this...
+    // Testem prefers this...
+    ENV.baseURL = '/';
+    ENV.locationType = 'auto';
+
+    // keep test console output quieter
+    ENV.APP.LOG_ACTIVE_GENERATION = false;
+    ENV.APP.LOG_VIEW_LOOKUPS = false;
+
+    ENV.APP.rootElement = '#ember-testing';
   }
 
   if (environment === 'production') {

@@ -77,13 +77,13 @@ Component = Ember.Component.extend
       @set('bubbleContent', topicFacade)
     else if selection.toString().length > 0 && !@get('bubbleContent')
       highlightGroup = @createHighlight(selection)
-      topicFacade = new @TopicsFacade(@get('task.topics.content'), highlightGroup, this)
+      topicFacade = new @TopicsFacade(@get('tua.analysisType.topics.content'), highlightGroup, this)
       @set('bubbleContent', topicFacade)
     else if @get('questionBubbleIsVisible')
       @disableQuestionBubble()
 
   reactivateHighlight: (id) ->
-    highlightGroup = @get('task.highlightGroups.content').filterBy('id', id)[0]
+    highlightGroup = @get('tua.highlightGroups.content').filterBy('id', id)[0]
     @set('highlightGroup', highlightGroup)
     nextQuestion = highlightGroup.get('pendingQuestions.content')[0]
     if nextQuestion
@@ -97,8 +97,8 @@ Component = Ember.Component.extend
     $(event.target).hasClass('question-bubble') || $(event.target).parents().hasClass('question-bubble')
 
   createHighlight: (selection) ->
-    task = @get('task')
-    id = task.get('highlightGroups.content.length')
+    tua = @get('tua')
+    id = tua.get('highlightGroups.content.length')
     range = window.getSelection().getRangeAt(0);
     preCaretRange = range.cloneRange();
     preCaretRange.selectNodeContents($("#annotatable_text")[0]);
@@ -108,19 +108,19 @@ Component = Ember.Component.extend
     if @get('highlightingGroup')
       highlightGroup = @get('bubbleContent').highlightGroup
     else
-      highlightGroup = task.store.createRecord('highlight-group',
+      highlightGroup = tua.store.createRecord('highlight-group',
         qa: Ember.A()
         complete: false
         id: id
       )
-    highlight = task.store.createRecord('highlight',
+    highlight = tua.store.createRecord('highlight',
       start: startOffset
       stop: endOffset
       highlightGroup: highlightGroup
     )
     highlightGroup.get('highlights').pushObject(highlight)
     @set('highlightGroup', highlightGroup)
-    task.get('highlightGroups').pushObject(highlightGroup)
+    tua.get('highlightGroups').pushObject(highlightGroup)
     highlightGroup
 
   setLocation: (event) ->
@@ -148,7 +148,7 @@ Component = Ember.Component.extend
 
   addToQa: (choice) ->
     @get('highlightGroup.qa').push(@get('bubbleContent').qa(choice))
-    @get('task').notifyPropertyChange('highlightGroups')
+    @get('tua').notifyPropertyChange('highlightGroups')
 
   getBubbleContent: (choice) ->
     newBubbleContent = @get('bubbleContent').next(choice)
@@ -157,10 +157,10 @@ Component = Ember.Component.extend
       @get('highlightGroup').markAsComplete()
 
   formattedText: (->
-    text = @get('task.text')
+    text = @get('tua.text')
     text = @insertElements(text)
     text.replace(/\n/g, "<span class='breaking-span'>&#92;n</span>")
-  ).property('task.text', 'task.highlightGroups.@each', 'reduced')
+  ).property('tua.text', 'tua.highlightGroups.@each', 'reduced')
 
 
   insertElements: (text) ->
@@ -210,7 +210,7 @@ Component = Ember.Component.extend
     text.slice(0, index.index) + string + text.slice(index.index)
 
   getHighlightIndexes: (text) ->
-    highlightGroups = @get('task.highlightGroups')
+    highlightGroups = @get('tua.highlightGroups')
     indexes = []
     highlightGroups.forEach (highlightGroup) ->
       highlightGroup.get('highlights').forEach (highlight) ->
@@ -221,7 +221,7 @@ Component = Ember.Component.extend
     indexes
 
   getTuaOffsetIndexes: (text) ->
-    offsets = @get('task.tua.offsets')
+    offsets = @get('tua.offsets')
     indexes = []
     offsets.forEach (offset)->
       startIndex = offset.start
@@ -232,7 +232,7 @@ Component = Ember.Component.extend
 
   getExtendedOffsetIndexes: (text) ->
     _this = this
-    offsets = @get('task.tua.offsets')
+    offsets = @get('tua.offsets')
     indexes = []
     offsets.forEach (offset)->
       startIndex = _this.indexByWord(text, offset.start, -15)
@@ -265,7 +265,7 @@ Component = Ember.Component.extend
   extendedIndexIsUnconflicting: (text, index, extendedIndex, wordCount) ->
     _this = this
     reverse = @extendedOffsetIsReversed(wordCount)
-    offsets = @get('task.tua.offsets')
+    offsets = @get('tua.offsets')
     conflicting = offsets.forEach (offset)->
       if reverse
         offsetIndex = _this.getIndexForExtendedOffset(text, offset.stop, wordCount)

@@ -1,6 +1,6 @@
 Model = DS.Model.extend
   
-  task: DS.belongsTo("task")
+  tua: DS.belongsTo("tua")
 
   highlights: DS.hasMany("highlight")
   pendingQuestions: DS.hasMany("question")
