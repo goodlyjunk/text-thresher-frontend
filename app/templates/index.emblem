@@ -5,7 +5,7 @@ header.header txt-thrshr
 ul
   each tua in model
     li
-      tua
+      tua.offsets
 
 .main
   / annotatable-text text=text tua=this
