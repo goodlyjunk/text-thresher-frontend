@@ -1,4 +1,7 @@
+log model
+
 header.header txt-thrshr
+
 
 .main
   annotatable-text text=text tua=this
