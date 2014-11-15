@@ -10,8 +10,8 @@ Answer = DS.Model.extend
     questionDependencies = question.get("dependencies")
     if questionDependencies
       questionDependencies.forEach (dependency)->
-        if dependency.if == _this.get('id')
-          newQuestion = topic.get('questions.content').filterBy('id', dependency.then)[0]
+        if dependency[0] == _this.get('id')
+          newQuestion = topic.get('questions.content').filterBy('id', dependency[1])[0]
           dependencies.push(newQuestion)
     dependencies
 

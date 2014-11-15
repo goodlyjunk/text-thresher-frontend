@@ -60,10 +60,6 @@ Component = Ember.Component.extend
     @get('bubbleContent') instanceof @HighlightFacade
   ).property('bubbleContent')
 
-  tua: (->
-    @get('tuas.content.content')[8]
-  ).property('tuas')
-
   mouseDown: (event) ->
     location = @createLocationObject(event)
     @set("mouseDownLocation", location)
@@ -228,8 +224,8 @@ Component = Ember.Component.extend
     offsets = @get('tua.offsets')
     indexes = []
     offsets.forEach (offset)->
-      startIndex = offset[0]
-      endIndex = offset[1]
+      startIndex = offset.start
+      endIndex = offset.stop
       indexes.push { index: startIndex, type: "offset" }
       indexes.push { index: endIndex }
     indexes
@@ -239,8 +235,8 @@ Component = Ember.Component.extend
     offsets = @get('tua.offsets')
     indexes = []
     offsets.forEach (offset)->
-      startIndex = _this.indexByWord(text, offset[0], -15)
-      endIndex = _this.indexByWord(text, offset[1], 15)
+      startIndex = _this.indexByWord(text, offset.start, -15)
+      endIndex = _this.indexByWord(text, offset.stop, 15)
       startIndex = 0 if startIndex < 0
       endIndex = text.length - 1 if endIndex > text.length - 1
       indexes.push { index: startIndex, type: "extended-offset" } if startIndex
@@ -272,10 +268,10 @@ Component = Ember.Component.extend
     offsets = @get('tua.offsets')
     conflicting = offsets.forEach (offset)->
       if reverse
-        offsetIndex = _this.getIndexForExtendedOffset(text, offset[1], wordCount)
+        offsetIndex = _this.getIndexForExtendedOffset(text, offset.stop, wordCount)
         return true if offsetIndex < index && offsetIndex > extendedIndex
       else
-        offsetIndex = _this.getIndexForExtendedOffset(text, offset[0], wordCount)
+        offsetIndex = _this.getIndexForExtendedOffset(text, offset.start, wordCount)
         return true if offsetIndex > index && offsetIndex < extendedIndex
     if conflicting then false else true
 

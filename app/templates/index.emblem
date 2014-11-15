@@ -2,12 +2,7 @@ log model
 
 header.header txt-thrshr
 
-ul
-  each tua in model
-    li
-      tua.offsets
-
 .main
-  / annotatable-text text=text tua=this
+  annotatable-text tuas=this
 
-/ ontology-tree topics=topics
+ontology-tree topics=topics
