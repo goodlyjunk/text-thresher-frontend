@@ -3,7 +3,7 @@
 Controller = Ember.Controller.extend
 
   topics: (->
-    @get('content.content')[8].get('analysisType.topics')
+    @get('content.content')[0].get('analysisType.topics')
   ).property('analysisType.topics')
 
 
