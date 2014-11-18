@@ -2,6 +2,8 @@
 
 if questionBubbleIsVisible
   question-bubble annotator=this bubbleContent=bubbleContent
+else
+	submit-box annotator=this
 
 if reduced
   button click="toggleText" Show full article

@@ -1,4 +1,5 @@
-p == bubbleContent.text
+if bubbleContent.text
+	p == bubbleContent.text
 each bubbleContent.choices
   button.block.pointer click="clickChoice this"
     == text
