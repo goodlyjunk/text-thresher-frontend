@@ -91,8 +91,12 @@ Component = Ember.Component.extend
     @set('highlightGroup', highlightGroup)
     nextQuestion = highlightGroup.get('pendingQuestions.content')[0]
     if nextQuestion
-      topic = highlightGroup.get('qa')[0].choice
-      facade = new @QuestionFacade(topic, nextQuestion, highlightGroup, this)
+      firstQA = highlightGroup.get('qa')[0]
+      if firstQA
+        topic = highlightGroup.get('qa')[0].choice
+        facade = new @QuestionFacade(topic, nextQuestion, highlightGroup, this)
+      else
+        facade = new @TopicsFacade(@get('tua.analysisType.topics.content'), highlightGroup, this)
     else
       facade = new @HighlightFacade(highlightGroup, this)
     @set('bubbleContent', facade)

@@ -1,3 +1,5 @@
+button click="rewind" < Rewind
+
 p == bubbleContent.text
 
 textarea#question_bubble_textarea

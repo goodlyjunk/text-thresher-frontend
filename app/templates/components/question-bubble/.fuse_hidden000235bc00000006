@@ -1,6 +1,7 @@
 if bubbleContent.text
-	button click="rewind" < Rewind
 	p == bubbleContent.text
 each bubbleContent.choices
   button.block.pointer click="clickChoice this"
     == text
+
+button click="rewind" < Rewind

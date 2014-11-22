@@ -17,6 +17,11 @@ Component = Ember.Component.extend
   ).on('didInsertElement')
 
   actions:
+    rewind: ->
+      @get('bubbleContent.highlightGroup').rewind()
+      @get('annotator').reactivateHighlight(@get('bubbleContent.highlightGroup.id'))
+      @rerender()
+
     clickChoice: (choice) ->
       @get('annotator').acceptChoice(choice, this)
 

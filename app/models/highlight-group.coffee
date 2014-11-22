@@ -8,6 +8,19 @@ Model = DS.Model.extend
   complete: DS.attr("boolean")
   qa: Ember.A()
 
+  rewind: ->
+    qa = @get('qa')
+    lastQuestion = qa.popObject()
+    if lastQuestion.question
+      rejects = @get('pendingQuestions').reject (question) ->
+        keep = true
+        lastQuestion.question.get('dependencies').forEach (dependency) ->
+          keep = false if dependency[1] == question.id
+        return keep
+      @get('pendingQuestions').removeObjects(rejects)
+    @get('pendingQuestions').insertAt(0, lastQuestion.question) if lastQuestion.question
+    qa.removeObject(lastQuestion)
+
   markAsComplete: ->
     @set('complete', true)
 

@@ -1,3 +1,5 @@
+button click="rewind" < Rewind
+
 p == bubbleContent.text
 
 ul#question_bubble_check_list.no-list-style
