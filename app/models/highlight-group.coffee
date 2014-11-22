@@ -11,12 +11,15 @@ Model = DS.Model.extend
   rewind: ->
     qa = @get('qa')
     lastQuestion = qa.popObject()
-    if lastQuestion.question
+    if lastQuestion.choice
       rejects = @get('pendingQuestions').reject (question) ->
         keep = true
-        lastQuestion.question.get('dependencies').forEach (dependency) ->
-          keep = false if dependency[1] == question.id
-        return keep
+        if lastQuestion.question
+          lastQuestion.choice.dependencies(lastQuestion.question.get('topic'), lastQuestion.question).forEach (dependency) ->
+            keep = false if dependency.id == question.id
+          return keep
+        else
+          keep = false if lastQuestion.choice.id + ".01" == question.id
       @get('pendingQuestions').removeObjects(rejects)
     @get('pendingQuestions').insertAt(0, lastQuestion.question) if lastQuestion.question
     qa.removeObject(lastQuestion)

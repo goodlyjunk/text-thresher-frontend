@@ -18,8 +18,12 @@ Component = Ember.Component.extend
 
   actions:
     rewind: ->
-      @get('bubbleContent.highlightGroup').rewind()
-      @get('annotator').reactivateHighlight(@get('bubbleContent.highlightGroup.id'))
+      highlightGroup = @get('bubbleContent.highlightGroup')
+      highlightGroup.rewind()
+      if highlightGroup.get('pendingQuestions.content').length > 0
+        @get('annotator').reactivateHighlight(highlightGroup.id)
+      else
+        @get('annotator').openTopicsMenu(highlightGroup)
       @rerender()
 
     clickChoice: (choice) ->

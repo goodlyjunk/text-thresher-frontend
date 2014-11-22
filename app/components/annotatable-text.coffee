@@ -77,12 +77,11 @@ Component = Ember.Component.extend
       event.preventDefault()
     else if selection.toString().length > 0 && @get('highlightingGroup')
       highlightGroup = @createHighlight(selection)
-      topicFacade = new @HighlightFacade(highlightGroup, this)
-      @set('bubbleContent', topicFacade)
+      highlightFacade = new @HighlightFacade(highlightGroup, this)
+      @set('bubbleContent', highlightFacade)
     else if selection.toString().length > 0 && !@get('bubbleContent')
       highlightGroup = @createHighlight(selection)
-      topicFacade = new @TopicsFacade(@get('tua.analysisType.topics.content'), highlightGroup, this)
-      @set('bubbleContent', topicFacade)
+      @openTopicsMenu(highlightGroup)
     else if @get('questionBubbleIsVisible')
       @disableQuestionBubble()
 
@@ -103,6 +102,11 @@ Component = Ember.Component.extend
 
   clickedQuestionBubble: (event) ->
     $(event.target).hasClass('question-bubble') || $(event.target).parents().hasClass('question-bubble')
+
+  openTopicsMenu: (highlightGroup) ->
+    topicFacade = new @TopicsFacade(@get('tua.analysisType.topics.content'), highlightGroup, this)
+    @set('bubbleContent', topicFacade)
+
 
   createHighlight: (selection) ->
     tua = @get('tua')
@@ -168,7 +172,7 @@ Component = Ember.Component.extend
     text = @get('tua.text')
     text = @insertElements(text)
     text.replace(/\n/g, "<span class='breaking-span'>&#92;n</span>")
-  ).property('tua.text', 'tua.highlightGroups.@each', 'reduced')
+  ).property('tua.text', 'tua.highlightGroups.@each.highlights', 'reduced')
 
 
   insertElements: (text) ->
