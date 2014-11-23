@@ -1,4 +1,4 @@
-button click="rewind" < Rewind
+button.rewind-button click="rewind" < Rewind
 
 p == bubbleContent.text
 

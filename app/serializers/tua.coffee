@@ -3,7 +3,11 @@
 
 Serializer = DS.RESTSerializer.extend
 
+  pushPayload: (store, payload) ->
+    return @extractArray(store, payload.type, payload.payload)
+
   extractArray: (store, type, payload) ->
+    nextUrl = payload.next
     tuas = payload.results
     analysisTypes = Ember.A()
     topics = Ember.A()
@@ -13,6 +17,7 @@ Serializer = DS.RESTSerializer.extend
     tuas.forEach (tua) ->
       analysisTypes.pushObject tua.analysis_type
       tua.analysisType = tua.analysis_type.id
+      tua.nextUrl = nextUrl
       delete tua.analysis_type
 
     analysisTypes.forEach (analysisType) ->

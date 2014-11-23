@@ -61,7 +61,11 @@ Component = Ember.Component.extend
   ).property('bubbleContent')
 
   tua: (->
-    @get('tuas.content.content')[0]
+    contentTua = @get('tuas.content.content')
+    if contentTua
+      @get('tuas.content.content')[0]
+    else
+      @get('tuas')[0]
   ).property('tuas')
 
   mouseDown: (event) ->
