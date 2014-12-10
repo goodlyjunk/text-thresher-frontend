@@ -1,7 +1,7 @@
 module.exports = function(app) {
   var express = require('express');
   var mockServerRouter = express.Router();
-  mockServerRouter.post('/tuas', function(req, res) {
+  mockServerRouter.post('/highlight-groups', function(req, res) {
     res.send({});
   })
   mockServerRouter.get('/tuas', function(req, res) {

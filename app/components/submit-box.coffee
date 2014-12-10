@@ -16,7 +16,7 @@ Component = Ember.Component.extend
 					offsets: []
 					questions: []
 				highlightGroup.get('highlights').forEach (highlight) ->
-					newData.offsets.push [highlight.start, highlight.stop]
+					newData.offsets.push [highlight.get('start'), highlight.get('stop')]
 					highlightGroup.get('qa').forEach (qa) ->
 						type = qa.choice.get('constructor.typeKey')
 						answer = switch type
@@ -29,11 +29,7 @@ Component = Ember.Component.extend
 								id: qa.question.id
 								answer: answer
 				data.push newData
-			request = Ember.$.ajax
-				type: "POST"
-				dataType: "JSON"
-				url: "/api/tuas"
-				data: data
+			request = Ember.$.post "/api/highlight-groups", { "highlight-groups": data }
 			request.done( (response) ->
 				url = annotator.get('tua.nextUrl')
 				Ember.$.ajax
