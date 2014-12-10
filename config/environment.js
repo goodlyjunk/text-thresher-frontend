@@ -43,6 +43,8 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
+    ENV.APP.API_HOST = 'http://text-thresher.herokuapp.com/';
+    ENV.APP.API_NAMESPACE = 'api';
 
   }
 
