@@ -114,7 +114,7 @@ Component = Ember.Component.extend
 
   createHighlight: (selection) ->
     tua = @get('tua')
-    id = tua.get('highlightGroups.content.length')
+    id = tua.store.all('highlightGroup').content.length
     range = window.getSelection().getRangeAt(0);
     preCaretRange = range.cloneRange();
     preCaretRange.selectNodeContents($("#annotatable_text")[0]);
