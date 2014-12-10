@@ -29,7 +29,7 @@ Component = Ember.Component.extend
 								id: qa.question.id
 								answer: answer
 				data.push newData
-			request = Ember.$.post "/api/highlight-groups", { "highlight-groups": data }
+			request = Ember.$.post "/api/highlight-groups", { "": data }
 			request.done( (response) ->
 				url = annotator.get('tua.nextUrl')
 				Ember.$.ajax
