@@ -9,7 +9,7 @@ module.exports = function(app) {
     extended: true
   }));
 
-  mocks.forEach(function(route) { route(app); });
+  // mocks.forEach(function(route) { route(app); });
 
   // proxy expects a stream, but express will have turned
   // the request stream into an object because bodyParser

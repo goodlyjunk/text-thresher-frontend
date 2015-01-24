@@ -13,10 +13,13 @@ module.exports = function(environment) {
       }
     },
 
+    contentSecurityPolicy: {
+      'connect-src': "'self' http://text-thresher.herokuapp.com",
+    },
+
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
-      API_NAMESPACE: 'api'
     }
   };
 
@@ -26,8 +29,8 @@ module.exports = function(environment) {
     // ENV.APP.LOG_TRANSITIONS = true;
     // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
     ENV.APP.LOG_VIEW_LOOKUPS = true;
-    ENV.APP.API_HOST = 'http://0.0.0.0:4200/';
-    ENV.APP.API_NAMESPACE = 'api';
+    ENV.APP.API_HOST = 'http://localhost:4200';
+
   }
 
   if (environment === 'test') {
@@ -43,9 +46,7 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
-    ENV.APP.API_HOST = 'http://text-thresher.herokuapp.com/';
-    ENV.APP.API_NAMESPACE = 'api';
-
+    ENV.APP.API_HOST = 'http://text-thresher.herokuapp.com';
   }
 
   return ENV;
