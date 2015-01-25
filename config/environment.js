@@ -14,7 +14,7 @@ module.exports = function(environment) {
     },
 
     contentSecurityPolicy: {
-      'connect-src': "'self' http://text-thresher.herokuapp.com",
+      'connect-src': "'self' http://localhost:5000 http://text-thresher.herokuapp.com",
     },
 
     APP: {
@@ -29,7 +29,7 @@ module.exports = function(environment) {
     // ENV.APP.LOG_TRANSITIONS = true;
     // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
     ENV.APP.LOG_VIEW_LOOKUPS = true;
-    ENV.APP.API_HOST = 'http://localhost:4200';
+    ENV.APP.API_HOST = 'http://localhost:5000';
 
   }
 
