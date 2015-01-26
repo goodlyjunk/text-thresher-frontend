@@ -18,6 +18,7 @@ Serializer = DS.RESTSerializer.extend
       analysisTypes.pushObject tua.analysis_type
       tua.analysisType = tua.analysis_type.id
       tua.nextUrl = nextUrl
+      tua.text = tua.article.text
       delete tua.analysis_type
 
     analysisTypes.forEach (analysisType) ->
