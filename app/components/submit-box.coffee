@@ -1,4 +1,5 @@
 `import Ember from "ember";`
+`import config from "../config/environment"`
 
 Component = Ember.Component.extend
 
@@ -29,7 +30,7 @@ Component = Ember.Component.extend
 								id: qa.question.id
 								answer: answer
 				data.push newData
-			request = Ember.$.post "/api/highlight-groups", { "": data }
+			request = Ember.$.post config.APP.API_HOST + "/api/highlight_groups/", { "": data }
 			request.done( (response) ->
 				url = annotator.get('tua.nextUrl')
 				Ember.$.ajax
@@ -49,7 +50,7 @@ Component = Ember.Component.extend
 							analysisTypes.pushObject tua.analysis_type
 							tua.analysisType = tua.analysis_type.id
 							tua.nextUrl = nextUrl
-                                                        tua.text = tua.article.text
+							tua.text = tua.article.text
 							delete tua.analysis_type
 
 						analysisTypes.forEach (analysisType) ->
