@@ -30,7 +30,10 @@ Component = Ember.Component.extend
 								id: qa.question.id
 								answer: answer
 				data.push newData
-			request = Ember.$.post config.APP.API_HOST + "/api/highlight_groups/", data
+			requestObject = 
+				data: JSON.stringify(data)
+				dataType: 'application/json'
+			request = Ember.$.post(config.APP.API_HOST + "/api/highlight_groups/", requestObject)
 			request.done( (response) ->
 				url = annotator.get('tua.nextUrl')
 				Ember.$.ajax
