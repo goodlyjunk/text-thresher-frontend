@@ -29,7 +29,7 @@ module.exports = function(environment) {
     // ENV.APP.LOG_TRANSITIONS = true;
     // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
     ENV.APP.LOG_VIEW_LOOKUPS = true;
-    ENV.APP.API_HOST = 'http://text-thresher.herokuapp.com';
+    ENV.APP.API_HOST = 'http://127.0.0.1:5000';
 
   }
 

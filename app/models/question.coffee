@@ -12,13 +12,14 @@ Question = DS.Model.extend
   text: DS.attr("string")
   top: DS.attr("boolean")
   type: DS.attr("string")
+  questionId: DS.attr("string")
 
   choices: (->
     @get('answers')
   ).property('answers.@each')
 
   dependencies: (->
-    id = this.id.toString()
+    id = this.get('questionId').toString()
     @get('topic.analysisType.questionDependencies').filter( (dependency) ->
       dependency[0].split(".").slice(0, 2).join(".") == id
     )

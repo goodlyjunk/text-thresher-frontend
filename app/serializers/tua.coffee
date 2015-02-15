@@ -27,18 +27,21 @@ Serializer = DS.RESTSerializer.extend
       if analysisType.topics.length
         topics.pushObjects analysisType.topics
         analysisType.topics = analysisType.topics.map (topic) ->
+          topic.topicId = topic.topic_id
           topic.id
 
     topics.forEach (topic) ->
       questions.pushObjects topic.questions
       topic.questions = topic.questions.map (question) ->
-        question.id = topic.id + "." + question.id
+        questionId = if question.question_id < 10 then "0" + question.question_id else question.question_id
+        question.questionId = topic.topicId + "." + questionId
         question.id
 
     questions.forEach (question) ->
       answers.pushObjects question.answers
       question.answers = question.answers.map (answer) ->
-        answer.id = question.id + "." + answer.id
+        answerId = if answer.answer_id < 10 then "0" + answer.answer_id else answer.answer_id
+        answer.answerId = question.questionId + "." + answerId
         answer.id
 
     payload =

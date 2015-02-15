@@ -4,6 +4,7 @@ Topic = DS.Model.extend
   questions: DS.hasMany("question")
 
   name: DS.attr("string")
+  topicId: DS.attr("string")
 
   text: (->
     @get('name')
@@ -14,7 +15,7 @@ Topic = DS.Model.extend
   ).property('questions.@each')
 
   dependencies: (->
-    [@get('questions.content').filterBy('id', @id + ".01")[0]]
+    [@get('questions.content').filterBy('questionId', parseInt(@get('topicId') + ".01"), 10)[0]]
   ).property("questions")
 
   ontologicalDependencies: (->
