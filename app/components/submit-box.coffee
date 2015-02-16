@@ -27,12 +27,12 @@ Component = Ember.Component.extend
               when "timeAnswer" then qa.choice.get('time')
             unless type == "topic"
               newData.questions.push
-                id: parseInt(qa.question.id, 10)
+                question: parseInt(qa.question.id, 10)
                 answer: answer
         data.push newData
       requestObject = 
         type: 'POST'
-        dataType: 'application/json'
+        contentType: 'application/json'
         data: JSON.stringify(data)
       request = Ember.$.ajax(config.APP.API_HOST + "/api/highlight_groups/", requestObject)
       request.done( (response) ->
