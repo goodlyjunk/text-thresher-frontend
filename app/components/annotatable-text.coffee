@@ -68,6 +68,10 @@ Component = Ember.Component.extend
       @get('tuas')[0]
   ).property('tuas')
 
+  topics: (->
+    @get('tua.analysisType.topics')
+  ).property('tua')
+
   mouseDown: (event) ->
     location = @createLocationObject(event)
     @set("mouseDownLocation", location)

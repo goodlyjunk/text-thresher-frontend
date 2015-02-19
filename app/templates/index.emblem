@@ -4,5 +4,3 @@ header.header txt-thrshr
 
 .main
   annotatable-text tuas=this
-
-ontology-tree topics=topics
