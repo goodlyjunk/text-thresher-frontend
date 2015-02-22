@@ -18,7 +18,7 @@ Component = Ember.Component.extend
     @question = question
     @formType = question.get('type')
     @text = question.get('text')
-    @choices = question.get('choices.content')
+    @choices = question.get('choices.currentState')
     @highlightGroup = highlightGroup
     @annotatedText = annotatedText
 
@@ -30,8 +30,8 @@ Component = Ember.Component.extend
       pendingQuestions.removeAt(0)
       dependencies = if choice.dependencies then choice.dependencies(@topic, @question) else []
       pendingQuestions.pushObjects(dependencies)
-      return new @annotatedText.HighlightFacade(@highlightGroup, @annotatedText) if pendingQuestions.get('content').length == 0
-      nextQuestion = pendingQuestions.get('content')[0]
+      return new @annotatedText.HighlightFacade(@highlightGroup, @annotatedText) if pendingQuestions.get('currentState').length == 0
+      nextQuestion = pendingQuestions.get('currentState')[0]
       new @annotatedText.QuestionFacade(@topic, nextQuestion, @highlightGroup, @annotatedText)
     return
 
@@ -48,7 +48,7 @@ Component = Ember.Component.extend
       pendingQuestions = @highlightGroup.get('pendingQuestions')
       dependencies = choice.get('dependencies')
       pendingQuestions.pushObjects(dependencies)
-      firstQuestion = pendingQuestions.get('content')[0]
+      firstQuestion = pendingQuestions.currentState[0]
       new @annotatedText.QuestionFacade(choice, firstQuestion, @highlightGroup, @annotatedText)
     return
 
@@ -94,9 +94,9 @@ Component = Ember.Component.extend
       @disableQuestionBubble()
 
   reactivateHighlight: (id) ->
-    highlightGroup = @get('tua.highlightGroups.content').filterBy('id', id)[0]
+    highlightGroup = @get('tua.highlightGroups.currentState').filterBy('id', id)[0]
     @set('highlightGroup', highlightGroup)
-    nextQuestion = highlightGroup.get('pendingQuestions.content')[0]
+    nextQuestion = highlightGroup.get('pendingQuestions.currentState')[0]
     if nextQuestion
       firstQA = highlightGroup.get('qa')[0]
       if firstQA
@@ -112,7 +112,7 @@ Component = Ember.Component.extend
     $(event.target).hasClass('question-bubble') || $(event.target).parents().hasClass('question-bubble')
 
   openTopicsMenu: (highlightGroup) ->
-    topicFacade = new @TopicsFacade(@get('tua.analysisType.topics.content'), highlightGroup, this)
+    topicFacade = new @TopicsFacade(@get('tua.analysisType.topics.canonicalState'), highlightGroup, this)
     @set('bubbleContent', topicFacade)
 
 

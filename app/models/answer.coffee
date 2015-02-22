@@ -12,7 +12,7 @@ Answer = DS.Model.extend
     if questionDependencies
       questionDependencies.forEach (dependency)->
         if dependency[0] == _this.get('answerId')
-          newQuestion = topic.get('questions.content').filterBy('questionId', dependency[1])[0]
+          newQuestion = topic.get('questions.currentState').filterBy('questionId', dependency[1])[0]
           dependencies.push(newQuestion)
     dependencies
 
