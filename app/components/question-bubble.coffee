@@ -20,7 +20,7 @@ Component = Ember.Component.extend
     rewind: ->
       highlightGroup = @get('bubbleContent.highlightGroup')
       highlightGroup.rewind()
-      if highlightGroup.get('pendingQuestions.content').length > 0
+      if highlightGroup.get('pendingQuestions.currentState').length > 0
         @get('annotator').reactivateHighlight(highlightGroup.id)
       else
         @get('annotator').openTopicsMenu(highlightGroup)
@@ -32,7 +32,7 @@ Component = Ember.Component.extend
     selectChoice: ->
       select = $(this.get('element')).children('select')[0]
       optionId = $(select).children('option').filter(':selected')[0].value
-      answer = @get('bubbleContent.question.answers.content').filterBy('id', optionId)[0]
+      answer = @get('bubbleContent.question.answers.currentState').filterBy('id', optionId)[0]
       @get('annotator').acceptChoice(answer, this)
 
     submitText: ->
@@ -48,7 +48,7 @@ Component = Ember.Component.extend
     submitCheckList: ->
       checkedItems = $('#question_bubble_check_list').children('li').children('input').filter(':checked')
       checkListAnswer = @get('bubbleContent.question').store.createRecord('check-list-answer')
-      answers = @get('bubbleContent.question.answers.content')
+      answers = @get('bubbleContent.question.answers.currentState')
       $(checkedItems).each ->
         answer = answers.filterBy('id', this.value)[0]
         checkListAnswer.get('selectedAnswers').pushObject(answer)
