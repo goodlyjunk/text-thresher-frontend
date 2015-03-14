@@ -3,8 +3,6 @@
 
 Component = Ember.Component.extend
 
-  classNames: ["question-bubble"]
-
   actions:
     submit: ->
       data = []

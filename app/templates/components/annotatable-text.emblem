@@ -1,9 +1,6 @@
 #annotatable_text class=reduced:annotatable-text__reduced == formattedText
 
-if questionBubbleIsVisible
-  question-bubble annotator=this bubbleContent=bubbleContent
-else
-	submit-box annotator=this
+question-bubble annotator=this bubbleContent=bubbleContent
 
 if reduced
   button click="toggleText" Show full article

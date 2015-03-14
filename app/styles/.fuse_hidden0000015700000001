@@ -9,8 +9,8 @@ $greenlight-background-color: rgba(0, 255, 0, 0.2)
 $main-font-color: #33332D
 $highlight-font-color: #DB4105
 
-$disabled-font-color: #060605
-$disabled-background-color: #D3CAB0
+$disabled-font-color: #B23B0C
+$disabled-background-color: #060605
 
 $rhythm: 1vw
 $half-rhythm: $rhythm/2
