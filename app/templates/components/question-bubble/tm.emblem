@@ -1,6 +1,7 @@
-button.rewind-button click="rewind" < Rewind
+.question-bubble__content
+  button.rewind-button click="rewind" < Rewind
 
-p == bubbleContent.text
+  p == bubbleContent.text
 
-input#question_bubble_time_input type="time"
-button click="submitTime" Submit
+  input#question_bubble_time_input type="time"
+  button click="submitTime" Submit

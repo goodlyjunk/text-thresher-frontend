@@ -1,6 +1,7 @@
-button.rewind-button click="rewind" < Rewind
+.question-bubble__content
+  button.rewind-button click="rewind" < Rewind
 
-p == bubbleContent.text
+  p == bubbleContent.text
 
-textarea#question_bubble_textarea
-button click="submitText" Submit
+  textarea#question_bubble_textarea
+  button click="submitText" Submit

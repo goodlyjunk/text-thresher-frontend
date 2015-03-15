@@ -2,12 +2,12 @@
 
 Component = Ember.Component.extend
 
-  reduced: true
-
   init: ->
     topicsFacade = new @TopicsFacade(@get('tua.analysisType.topics.canonicalState'), this)
     @set('bubbleContent', topicsFacade)
     this._super()
+
+  reduced: true
 
   HighlightFacade: (highlightGroup, annotatedText) ->
     @highlightGroup = highlightGroup
@@ -95,7 +95,7 @@ Component = Ember.Component.extend
     else if selection.toString().length > 0 && !@get('questionBubbleIsVisible')
       highlightGroup = @createHighlight(selection)
       @activateTopicsMenu(highlightGroup)
-    else
+    else if !$(event.target).hasClass('text-toggle')
       @disableQuestionBubble()
 
   reactivateHighlight: (id) ->

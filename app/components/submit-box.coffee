@@ -3,6 +3,12 @@
 
 Component = Ember.Component.extend
 
+  disabled: (->
+    annotator = @get('annotator')
+    highlightGroups = annotator.get('tua.highlightGroups')
+    highlightGroups.length == 0
+  ).property('annotator.tua.highlightGroups.@each')
+
   actions:
     submit: ->
       data = []

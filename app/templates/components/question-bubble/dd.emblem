@@ -1,8 +1,9 @@
-button.rewind-button click="rewind" < Rewind
+.question-bubble__content
+  button.rewind-button click="rewind" < Rewind
 
-p == bubbleContent.text
+  p == bubbleContent.text
 
-select change="selectChoice"
-  each choice in bubbleContent.choices
-    option value=choice.id
-      == choice.text
+  select change="selectChoice"
+    each choice in bubbleContent.choices
+      option value=choice.id
+        == choice.text

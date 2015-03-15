@@ -1,10 +1,11 @@
-button.rewind-button click="rewind" < Rewind
+.question-bubble__content
+  button.rewind-button click="rewind" < Rewind
 
-p == bubbleContent.text
+  p == bubbleContent.text
 
-ul#question_bubble_check_list.no-list-style
-  each bubbleContent.choices
-    li
-      input type="checkbox" value=this.id
-      label == text
-button click="submitCheckList" Submit
+  ul#question_bubble_check_list.no-list-style
+    each bubbleContent.choices
+      li
+        input type="checkbox" value=this.id
+        label == text
+  button click="submitCheckList" Submit

@@ -1,5 +1,6 @@
-button.rewind-button click="rewind" < Rewind
-p == bubbleContent.text
-each bubbleContent.choices
-  button.block.pointer click="clickChoice this"
-    == text
+.question-bubble__content
+  button.rewind-button click="rewind" < Rewind
+  p == bubbleContent.text
+  each bubbleContent.choices
+    button.block.pointer click="clickChoice this"
+      == text
