@@ -2,11 +2,13 @@
   position: fixed
   font-family: $question-font
   right: 0
-  top: 4.25vw
+  top: 4.5vw
   width: 25vw
-  height: auto
+  max-height: 80%
   padding: $rhythm
-  overflow: visible
+  overflow-x: hidden
+  overflow-y: auto
+  direction: rtl
   background-color: $main-font-color
   color: $main-background-color
   button
@@ -31,6 +33,9 @@
   p
     margin-top: 0
 
+.question-bubble__content
+  direction: ltr
+
 #question_bubble_check_list
   label
     font-size: 1vw
@@ -40,8 +45,7 @@
     margin-bottom: 1vw
 
 .rewind-button
-    position: absolute
-    top: -3vw
-    width: 7vw !important
-    right: 0
-    z-index: 9999999999999999
+  width: 7vw !important
+  margin-left: $rhythm !important
+  z-index: 9999999999999999
+  float: right

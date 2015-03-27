@@ -9,12 +9,18 @@ Component = Ember.Component.extend
   formType: (->
     formType = @get('bubbleContent.formType')
     "components/question-bubble/#{ formType }" if formType
-  ).property('bubbleContent.formType')
+  ).property('bubbleContent')
 
   setLocation: (->
     location = @get('location')
     element = $(@get('element'))
   ).on('didInsertElement')
+
+  disabled: (->
+    highlightGroup = @get('bubbleContent.highlightGroup')
+
+    return true if !highlightGroup
+  ).property('bubbleContent')
 
   actions:
     rewind: ->
@@ -23,7 +29,7 @@ Component = Ember.Component.extend
       if highlightGroup.get('pendingQuestions.currentState').length > 0
         @get('annotator').reactivateHighlight(highlightGroup.id)
       else
-        @get('annotator').openTopicsMenu(highlightGroup)
+        @get('annotator').initializeTopicsMenu(highlightGroup)
       @rerender()
 
     clickChoice: (choice) ->
@@ -55,10 +61,10 @@ Component = Ember.Component.extend
       @get('annotator').acceptChoice(checkListAnswer, this)
 
     done: ->
-      @get('annotator').disableQuestionBubble()
+      @get('annotator').disableQuestionBubble(this)
 
     cancel: ->
       @get('annotator').destroyHighlightGroup()
-      @get('annotator').disableQuestionBubble()
+      @get('annotator').disableQuestionBubble(this)
 
 `export default Component;`

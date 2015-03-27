@@ -1,6 +1,7 @@
-button.rewind-button click="rewind" < Rewind
+.question-bubble__content
+  button.rewind-button click="rewind" < Rewind
 
-p Highlight additional phrases that support this assertion.
+  p Highlight additional phrases that support this assertion.
 
-button class="half" click="done" Done
-button class="half" click="cancel" Remove
+  button class="half" click="done" Done
+  button class="half" click="cancel" Remove

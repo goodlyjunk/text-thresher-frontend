@@ -3,7 +3,11 @@
 
 Component = Ember.Component.extend
 
-  classNames: ["question-bubble"]
+  disabled: (->
+    annotator = @get('annotator')
+    highlightGroups = annotator.get('tua.highlightGroups')
+    highlightGroups.length == 0
+  ).property('annotator.tua.highlightGroups.@each')
 
   actions:
     submit: ->
