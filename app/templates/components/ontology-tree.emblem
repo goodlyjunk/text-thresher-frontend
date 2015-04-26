@@ -1,13 +1,12 @@
-.ontology-tree
-	.ontology-tree__toggler
-		button click="toggleVisibility"
-			if visible
-				| Hide Ontology
-			else
-				| Show Ontology
+.ontology-tree__toggler
+	button.text-toggle click="toggleVisibility"
+		if visible
+			| Hide Ontology
+		else
+			| Show Ontology
 
-	if visible
-		ul.ontology-tree-list
-			each topic in topics
-				li.ontology-tree__topic
-					ontology-branch branch=topic topic=true
+if visible
+	ul.ontology-tree-list
+		each topic in topics
+			li.ontology-tree__topic
+				ontology-branch branch=topic topic=true
