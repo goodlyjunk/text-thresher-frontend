@@ -1,5 +1,5 @@
 html, body
-  font-size: $rhythm * 1.5
+  font-size: $rhythm
   font-family: $main-font
   color: $main-font-color
   background-color: $main-background-color
@@ -27,20 +27,25 @@ button
     background-color: $disabled-background-color !important
     color: $disabled-font-color !important
 
-.main
-  margin: 7vw 5vw 0
-  width: 50vw
-
-.sidebar
-  width: 40vw
-
 .header
   position: fixed
   top: 0
   left: 0
   right: 0
-  font-size: $rhythm * 3
+  font-size: $rhythm * 2
   background-color: $main-font-color
   color: $main-background-color
   padding: 1vw 5vw
-  height: 2.5vw
+  height: 1.5vw
+
+.container
+  display: flex;
+  // flex-direction: column
+
+.column_center
+  order: 2
+  flex: 1
+
+.column_left, .column_right
+  flex: 1
+  // flex: 0 0 12em

@@ -1,11 +1,14 @@
-#annotatable_text class=reduced:annotatable-text__reduced == formattedText
+.container
+  .column-right
+    ontology-tree topics=topics
+  .column-center
+    #annotatable_text class=reduced:annotatable-text__reduced == formattedText
+    if reduced
+      button.text-toggle click="toggleText" Show full article
+    else 
+      button.text-toggle click="toggleText" Show only partial article
+  .column-left
+    question-bubble annotator=this bubbleContent=bubbleContent
 
-question-bubble annotator=this bubbleContent=bubbleContent
-
-if reduced
-  button.text-toggle click="toggleText" Show full article
-else 
-  button.text-toggle click="toggleText" Show only partial article
 
 
-ontology-tree topics=topics

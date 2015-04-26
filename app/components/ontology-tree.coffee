@@ -6,6 +6,7 @@ Component = Ember.Component.extend
 
   actions:
     toggleVisibility: ->
+      console.log(@)
       @toggleProperty('visible')
 
 `export default Component;`

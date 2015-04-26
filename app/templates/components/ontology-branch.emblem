@@ -3,4 +3,4 @@ if shootsVisible
 	if branch.ontologicalDependencies
 		ul
 			each shoot in branch.ontologicalDependencies
-				ontology-branch branch=shoot
+				/ ontology-branch branch=shoot

@@ -7,8 +7,7 @@
 				| Show Ontology
 
 	if visible
-		table
-			tr
-				each topic in topics
-					td.ontology-tree__topic
-						ontology-branch branch=topic topic=true
+		ul.ontology-tree-list
+			each topic in topics
+				li.ontology-tree__topic
+					ontology-branch branch=topic topic=true

@@ -1,4 +1,3 @@
 header.header txt-thrshr
 
-.main
-  annotatable-text tuas=this
+annotatable-text tuas=this
