@@ -14,7 +14,7 @@ module.exports = function(environment) {
     },
 
     contentSecurityPolicy: {
-      'connect-src': "'self' http://localhost:5000 https://text-thresher.herokuapp.com",
+      'connect-src': "'self' http://127.0.0.1:5000 https://text-thresher.herokuapp.com",
     },
 
     APP: {
