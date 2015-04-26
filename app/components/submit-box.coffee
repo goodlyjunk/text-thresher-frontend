@@ -40,7 +40,7 @@ Component = Ember.Component.extend
         data: JSON.stringify(data)
       request = Ember.$.ajax(config.APP.API_HOST + "/api/highlight_groups/", requestObject)
       request.done( (response) ->
-        url = annotator.get('tua.nextUrl')
+        url = config.APP.API_HOST + '/api/tuas/random'
         Ember.$.ajax
           type: "GET"
           dataType: "JSON"
