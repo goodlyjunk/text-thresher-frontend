@@ -6,6 +6,7 @@ Component = Ember.Component.extend
 
   actions:
     toggleShoots: ->
-      @toggleProperty('shootsVisible')
+      console.log('shoots')
+      # @toggleProperty('shootsVisible')
 
 `export default Component;`

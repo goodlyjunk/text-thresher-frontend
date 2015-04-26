@@ -1,5 +1,0 @@
-each choice in bubbleContent.choices
-  button.block.pointer disabled=disabled click="clickChoice choice"
-    == choice.text
-
-submit-box annotator=annotator disabled=disabled
