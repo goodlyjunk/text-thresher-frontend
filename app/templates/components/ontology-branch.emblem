@@ -1,6 +1,5 @@
-li.text-toggle click="toggleShoots" class=topic = branch.text
-if shootsVisible
-	if branch.ontologicalDependencies
-		ul
-			each shoot in branch.ontologicalDependencies
-				ontology-branch branch=shoot
+li class=topic = branch.text
+if branch.ontologicalDependencies
+	ul
+		each shoot in branch.ontologicalDependencies
+			ontology-branch branch=shoot
