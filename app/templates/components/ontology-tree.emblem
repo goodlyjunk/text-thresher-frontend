@@ -9,4 +9,4 @@ if visible
 	ul.ontology-tree-list
 		each topic in topics
 			li.ontology-tree__topic
-				ontology-branch branch=topic topic=true
+				ontology-root branch=topic topic=true

@@ -2,7 +2,7 @@
 
 Component = Ember.Component.extend
   classNames: ["ontology-tree__branch"]
-  shootsVisible: true
+  shootsVisible: false
 
   actions:
     toggleShoots: ->
