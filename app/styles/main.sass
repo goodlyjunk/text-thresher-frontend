@@ -28,25 +28,20 @@ button
     color: $disabled-font-color !important
 
 .header
-  position: fixed
-  top: 0
-  left: 0
-  right: 0
   font-size: $rhythm * 2
   background-color: $main-font-color
   color: $main-background-color
   padding: 1vw 5vw
   height: 1.5vw
 
+
 .container
   display: flex;
-  margin-top: 3.5vw
-  // flex-direction: column
-
-.column_center
-  order: 2
   flex: 1
+  flex-direction: row
 
-.column_left, .column_right
+.column-center
+  flex: 4
+
+.column-left, .column-right
   flex: 1
-  // flex: 0 0 12em
